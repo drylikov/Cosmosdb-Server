@@ -1,0 +1,108 @@
+{
+  "name": "@vercel/cosmosdb-server",
+  "version": "0.15.0",
+  "description": "A Cosmos DB server implementation",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "github:vercel/cosmosdb-server",
+  "files": [
+    "cert.pem",
+    "key.pem",
+    "lib"
+  ],
+  "bin": {
+    "cosmosdb-server": "lib/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --ignore-path .gitignore --write '{src/**/*.ts,test/*.ts}'",
+    "format-staged": "git diff --cached --diff-filter=d --name-only '*.ts' | xargs prettier --list-different",
+    "lint": "eslint --ignore-path .gitignore '{src,test}/**/*.ts'",
+    "lint-staged": "git diff --cached --diff-filter=d --name-only '*.ts' | xargs eslint",
+    "prepublishOnly": "yarn build",
+    "test": "yarn test-code && yarn test-sdk",
+    "test-code": "NODE_TLS_REJECT_UNAUTHORIZED=0 jest",
+    "test-sdk": "./test/sdk.sh"
+  },
+  "dependencies": {
+    "@zeit/cosmosdb-query": "0.7.2",
+    "big-integer": "1.6.46",
+    "int64-buffer": "0.99.1007",
+    "lru-cache": "6.0.0",
+    "path-to-regexp": "3.1.0",
+    "raw-body": "2.4.1"
+  },
+  "devDependencies": {
+    "@azure/cosmos": "3.10.2",
+    "@types/jest": "^29.5.1",
+    "@types/lru-cache": "5.1.0",
+    "@types/node": "^16.0.0",
+    "@typescript-eslint/eslint-plugin": "5.59.6",
+    "@typescript-eslint/parser": "5.59.6",
+    "@zeit/git-hooks": "0.1.4",
+    "eslint": "8.35.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.32.2",
+    "jest": "^29.5.0",
+    "prettier": "1.18.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "8.4.1",
+    "typescript": "4.9.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "env": {
+      "jest/globals": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "jest"
+    ],
+    "rules": {
+      "import/extensions": "off",
+      "no-unused-vars": "off",
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_etag",
+            "_rid",
+            "_self",
+            "_ts"
+          ]
+        }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".ts"
+          ]
+        }
+      }
+    }
+  },
+  "git": {
+    "pre-commit": [
+      "lint-staged",
+      "format-staged"
+    ]
+  },
+  "engines": {
+    "node": ">=14.17"
+  }
+}
