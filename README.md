@@ -1,4 +1,4 @@
-# cosmosdb-server
+# Cosmosdb-Server
 
 A Cosmos DB server implementation for testing your apps locally.
 
